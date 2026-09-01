@@ -10,8 +10,7 @@ export default function AcademicianDashboardPage() {
   return (
     <LayoutAcademician>
       <div className="space-y-6">
-        {/* KPIs */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 lg:grid-cols-6">
           <KPICard title="Total students" value={aggregatedKPIs.totalStudents} />
           <KPICard title="Students assessed" value={aggregatedKPIs.studentsAssessed} />
           <KPICard title="Avg Skill Readiness" value={`${aggregatedKPIs.avgSkillReadiness}%`} />
@@ -20,30 +19,29 @@ export default function AcademicianDashboardPage() {
           <KPICard title="Active opportunities" value={aggregatedKPIs.activeIndustryOppportunities} />
         </div>
 
-        {/* Main grid: Skill Analytics + Gaps */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div className="lg:col-span-2 space-y-4">
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          <div className="space-y-4 lg:col-span-2">
             <SkillAnalytics skills={skillsMaster} />
             <StudentList students={students} />
           </div>
 
           <div className="space-y-4">
             <SkillGapInsights gaps={skillsMaster.filter((s) => s.proficiency < 65)} />
-            <div className="bg-white p-4 rounded-lg shadow-sm">
-              <h3 className="text-lg font-semibold mb-2">Industry Demand Snapshot</h3>
-              <p className="text-sm text-slate-500">Top demanded skills (mock)</p>
+            <div className="rounded-[24px] border border-[var(--border)] bg-[rgba(255,250,245,0.9)] p-4 shadow-sm">
+              <h3 className="mb-2 text-lg font-semibold text-[var(--charcoal)]">Industry Demand Snapshot</h3>
+              <p className="text-sm text-[var(--muted)]">Top demanded skills (mock)</p>
               <ul className="mt-3 space-y-2">
-                <li className="flex justify-between">
-                  <div>Python</div>
-                  <div className="text-slate-600">Very High</div>
+                <li className="flex justify-between rounded-xl bg-[#f4e5b8] px-3 py-2 text-sm text-[var(--charcoal)]">
+                  <span>Python</span>
+                  <span>Very High</span>
                 </li>
-                <li className="flex justify-between">
-                  <div>AWS</div>
-                  <div className="text-slate-600">High</div>
+                <li className="flex justify-between rounded-xl bg-[var(--sage)] px-3 py-2 text-sm text-[var(--charcoal)]">
+                  <span>AWS</span>
+                  <span>High</span>
                 </li>
-                <li className="flex justify-between">
-                  <div>React</div>
-                  <div className="text-slate-600">Medium</div>
+                <li className="flex justify-between rounded-xl bg-[#f4d7d1] px-3 py-2 text-sm text-[var(--charcoal)]">
+                  <span>React</span>
+                  <span>Medium</span>
                 </li>
               </ul>
             </div>

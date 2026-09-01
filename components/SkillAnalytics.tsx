@@ -3,54 +3,54 @@ import type { Skill } from '../types';
 
 function SmallBar({ value }: { value: number }) {
   return (
-    <div className="h-2 w-full bg-slate-100 rounded">
-      <div className="h-2 bg-sky-500 rounded" style={{ width: `${Math.max(6, value)}%` }} title={`${value}%`} />
+    <div className="h-2.5 w-full rounded-full bg-[#e9e3d9]">
+      <div className="h-2.5 rounded-full bg-[var(--accent)]" style={{ width: `${Math.max(6, value)}%` }} title={`${value}%`} />
     </div>
   );
 }
 
 export default function SkillAnalytics({ skills }: { skills: Skill[] }) {
   return (
-    <section className="bg-white p-4 rounded-lg shadow-sm">
-      <h2 className="text-lg font-semibold mb-4">Skill Analytics</h2>
+    <section className="rounded-[24px] border border-[var(--border)] bg-[rgba(255,250,245,0.9)] p-4 shadow-sm">
+      <h2 className="mb-4 text-lg font-semibold text-[var(--charcoal)]">Skill Analytics</h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
-          <h3 className="text-sm text-slate-500 mb-2">Skill distribution</h3>
+          <h3 className="mb-2 text-sm font-medium text-[var(--muted)]">Skill distribution</h3>
           <div className="space-y-3">
             {skills.map((s) => (
               <div key={s.id} className="flex items-center gap-3">
-                <div className="w-32 text-sm">{s.name}</div>
+                <div className="w-32 text-sm text-[var(--charcoal)]">{s.name}</div>
                 <div className="flex-1">
                   <SmallBar value={s.proficiency} />
                 </div>
-                <div className="w-12 text-right text-sm">{s.proficiency}%</div>
+                <div className="w-12 text-right text-sm text-[var(--charcoal)]">{s.proficiency}%</div>
               </div>
             ))}
           </div>
         </div>
 
         <div>
-          <h3 className="text-sm text-slate-500 mb-2">Readiness distribution</h3>
+          <h3 className="mb-2 text-sm font-medium text-[var(--muted)]">Readiness distribution</h3>
           <div className="grid grid-cols-3 gap-2">
-            <div className="p-3 bg-slate-50 rounded">
-              <div className="text-xs text-slate-400">High (85+)</div>
-              <div className="text-xl font-semibold mt-2">120</div>
+            <div className="rounded-2xl bg-[var(--sage)] p-3">
+              <div className="text-xs text-[var(--muted)]">High (85+)</div>
+              <div className="mt-2 text-xl font-bold text-[var(--charcoal)]">120</div>
             </div>
-            <div className="p-3 bg-slate-50 rounded">
-              <div className="text-xs text-slate-400">Medium (60-84)</div>
-              <div className="text-xl font-semibold mt-2">210</div>
+            <div className="rounded-2xl bg-[#f4e5b8] p-3">
+              <div className="text-xs text-[var(--muted)]">Medium (60-84)</div>
+              <div className="mt-2 text-xl font-bold text-[var(--charcoal)]">210</div>
             </div>
-            <div className":"p-3 bg-slate-50 rounded">
-              <div className="text-xs text-slate-400">Low (<60)</div>
-              <div className="text-xl font-semibold mt-2">102</div>
+            <div className="rounded-2xl bg-[#f4d7d1] p-3">
+              <div className="text-xs text-[var(--muted)]">Low (&lt;60)</div>
+              <div className="mt-2 text-xl font-bold text-[var(--charcoal)]">102</div>
             </div>
           </div>
 
           <div className="mt-4">
-            <h4 className="text-sm text-slate-500">Skill-gap trends</h4>
-            <p className="text-xs text-slate-400 mt-1">Trend visualizations should be populated from time-series assessment data. (mocked for demo)</p>
-            <div className="mt-3 h-24 bg-slate-100 rounded flex items-center justify-center text-slate-400">Trend sparkline placeholder</div>
+            <h4 className="text-sm font-medium text-[var(--muted)]">Skill-gap trends</h4>
+            <p className="mt-1 text-xs text-slate-500">Trend visualizations should be populated from time-series assessment data. (mocked for demo)</p>
+            <div className="mt-3 flex h-24 items-center justify-center rounded-2xl bg-[#f0ece6] text-slate-500">Trend sparkline placeholder</div>
           </div>
         </div>
       </div>

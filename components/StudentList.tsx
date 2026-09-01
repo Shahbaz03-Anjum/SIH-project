@@ -14,12 +14,12 @@ export default function StudentList({ students }: { students: Student[] }) {
   });
 
   return (
-    <section className="bg-white p-4 rounded-lg shadow-sm">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold">Students</h2>
+    <section className="rounded-[24px] border border-[var(--border)] bg-[rgba(255,250,245,0.9)] p-4 shadow-sm">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h2 className="text-lg font-semibold text-[var(--charcoal)]">Students</h2>
         <div className="flex items-center gap-2">
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search student" className="border px-2 py-1 rounded" />
-          <select value={dept} onChange={(e) => setDept(e.target.value)} className="border px-2 py-1 rounded">
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search student" className="rounded-xl border border-[var(--border)] bg-white px-3 py-2 text-sm text-[var(--charcoal)] outline-none focus:border-[var(--accent)]" />
+          <select value={dept} onChange={(e) => setDept(e.target.value)} className="rounded-xl border border-[var(--border)] bg-white px-3 py-2 text-sm text-[var(--charcoal)] outline-none focus:border-[var(--accent)]">
             <option value="All">All departments</option>
             {depts.map((d) => (
               <option key={d} value={d}>{d}</option>
@@ -30,35 +30,35 @@ export default function StudentList({ students }: { students: Student[] }) {
 
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="text-slate-500">
+          <thead className="text-[var(--muted)]">
             <tr>
-              <th className="text-left py-2">Name</th>
-              <th className="text-left py-2">Department</th>
-              <th className="py-2">Readiness</th>
-              <th className="py-2">Top skills</th>
-              <th className="py-2">Major gaps</th>
-              <th className="py-2">Status</th>
+              <th className="py-2 text-left">Name</th>
+              <th className="py-2 text-left">Department</th>
+              <th className="py-2 text-center">Readiness</th>
+              <th className="py-2 text-left">Top skills</th>
+              <th className="py-2 text-left">Major gaps</th>
+              <th className="py-2 text-left">Status</th>
             </tr>
           </thead>
           <tbody>
             {filtered.map((s) => (
-              <tr key={s.id} className="border-t">
-                <td className="py-3">{s.name}</td>
-                <td className="py-3">{s.department}</td>
-                <td className="py-3 text-center">{s.readiness}%</td>
+              <tr key={s.id} className="border-t border-[var(--border)]">
+                <td className="py-3 font-medium text-[var(--charcoal)]">{s.name}</td>
+                <td className="py-3 text-[var(--muted)]">{s.department}</td>
+                <td className="py-3 text-center font-medium text-[var(--charcoal)]">{s.readiness}%</td>
                 <td className="py-3">
-                  <div className="flex gap-2">
+                  <div className="flex flex-wrap gap-2">
                     {s.topSkills.map((sk) => (
-                      <span key={sk.id} className="text-xs bg-slate-100 px-2 py-1 rounded">{sk.name} {sk.proficiency}%</span>
+                      <span key={sk.id} className="rounded-full bg-[var(--sage)] px-2 py-1 text-[10px] font-medium text-[var(--charcoal)]">{sk.name} {sk.proficiency}%</span>
                     ))}
                   </div>
                 </td>
                 <td className="py-3">
                   {s.majorGaps.map((g) => (
-                    <span key={g.id} className="text-xs bg-rose-100 px-2 py-1 rounded mr-1">{g.name} {g.proficiency}%</span>
+                    <span key={g.id} className="mr-1 rounded-full bg-[#f4d7d1] px-2 py-1 text-[10px] font-medium text-[var(--charcoal)]">{g.name} {g.proficiency}%</span>
                   ))}
                 </td>
-                <td className="py-3">{s.internshipStatus || 'N/A'}</td>
+                <td className="py-3 text-[var(--muted)]">{s.internshipStatus || 'N/A'}</td>
               </tr>
             ))}
           </tbody>

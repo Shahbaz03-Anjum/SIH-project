@@ -2,9 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --bg: #f5efe8;
+  --panel: #fffaf5;
+  --panel-alt: #edf3ee;
+  --card: #f2efe9;
+  --charcoal: #1a2927;
+  --charcoal-soft: #223834;
+  --sage: #d9e7dc;
+  --yellow: #f4e5b8;
+  --accent: #ef6d52;
+  --accent-strong: #d95b42;
+  --border: rgba(28, 41, 39, 0.09);
+  --muted: #60706a;
+}
+
 html, body, #__next {
-  height: 100%;
+  min-height: 100%;
 }
+
 body {
-  @apply bg-slate-50;
+  @apply bg-[#f5efe8] text-[#1a2927] antialiased;
+  background-image: radial-gradient(circle at top, rgba(239, 109, 82, 0.07), transparent 30%), linear-gradient(to bottom, #f8f4ef, #f3efe8 40%, #f5efe8);
+  font-family: Arial, Helvetica, sans-serif;
 }
+
+* {
+  box-sizing: border-box;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+img {
+  max-width: 100%;
+}
+
+::selection {
+  background: rgba(239, 109, 82, 0.18);
+}
+
