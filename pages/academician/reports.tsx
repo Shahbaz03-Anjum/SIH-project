@@ -1,11 +1,15 @@
 import React, { useMemo, useState } from 'react';
 import LayoutAcademician from '../../components/LayoutAcademician';
-import { reportsOverview } from '../../lib/mockData';
+import { assessmentSummaries, opportunities, reportsOverview, skillGaps, students, trainingRecommendations } from '../../lib/mockData';
 
 const filters = ['All courses', 'Python', 'React', 'AWS', 'SQL'];
 
 export default function ReportsPage() {
   const [selectedCourse, setSelectedCourse] = useState('All courses');
+  const averageReadiness = Math.round(students.reduce((sum, student) => sum + student.readiness, 0) / students.length);
+  const completedAssessments = students.reduce((sum, student) => sum + student.assessments.filter((assessment) => assessment.completed).length, 0);
+  const allAssessments = students.reduce((sum, student) => sum + student.assessments.length, 0);
+  const averageScore = Math.round(assessmentSummaries.reduce((sum, item) => sum + item.score, 0) / assessmentSummaries.length);
 
   const filteredTrend = useMemo(() => {
     if (selectedCourse === 'All courses') return reportsOverview.monthlyTrend;
@@ -26,10 +30,10 @@ export default function ReportsPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
-          <div className="bg-white p-5 rounded-lg shadow-sm"><p className="text-sm text-slate-500">Total students</p><p className="text-3xl font-bold mt-2">{reportsOverview.totalStudents}</p></div>
-          <div className="bg-white p-5 rounded-lg shadow-sm"><p className="text-sm text-slate-500">Course completion</p><p className="text-3xl font-bold mt-2">{reportsOverview.completionRate}%</p></div>
-          <div className="bg-white p-5 rounded-lg shadow-sm"><p className="text-sm text-slate-500">Assessment performance</p><p className="text-3xl font-bold mt-2">{reportsOverview.assessmentPerformance}%</p></div>
-          <div className="bg-white p-5 rounded-lg shadow-sm"><p className="text-sm text-slate-500">Placement rate</p><p className="text-3xl font-bold mt-2">{reportsOverview.placementRate}%</p></div>
+          <div className="bg-white p-5 rounded-lg shadow-sm"><p className="text-sm text-slate-500">Students in cohort</p><p className="text-3xl font-bold mt-2">{students.length}</p></div>
+          <div className="bg-white p-5 rounded-lg shadow-sm"><p className="text-sm text-slate-500">Student readiness</p><p className="text-3xl font-bold mt-2">{averageReadiness}%</p></div>
+          <div className="bg-white p-5 rounded-lg shadow-sm"><p className="text-sm text-slate-500">Assessment performance</p><p className="text-3xl font-bold mt-2">{averageScore}%</p></div>
+          <div className="bg-white p-5 rounded-lg shadow-sm"><p className="text-sm text-slate-500">Active opportunities</p><p className="text-3xl font-bold mt-2">{opportunities.length}</p></div>
         </div>
 
         <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
@@ -66,9 +70,9 @@ export default function ReportsPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-white p-5 rounded-lg shadow-sm"><p className="text-sm text-slate-500">Skill gap rate</p><p className="text-2xl font-bold mt-2">{reportsOverview.skillGapRate}%</p></div>
-          <div className="bg-white p-5 rounded-lg shadow-sm"><p className="text-sm text-slate-500">Training participation</p><p className="text-2xl font-bold mt-2">{reportsOverview.trainingParticipation}%</p></div>
-          <div className="bg-white p-5 rounded-lg shadow-sm"><p className="text-sm text-slate-500">Recommended interventions</p><p className="text-2xl font-bold mt-2">18</p></div>
+          <div className="bg-white p-5 rounded-lg shadow-sm"><p className="text-sm text-slate-500">Critical skill gaps</p><p className="text-2xl font-bold mt-2">{skillGaps.filter((gap) => gap.priority === 'Critical').length}</p></div>
+          <div className="bg-white p-5 rounded-lg shadow-sm"><p className="text-sm text-slate-500">Assessment completion</p><p className="text-2xl font-bold mt-2">{allAssessments ? Math.round((completedAssessments / allAssessments) * 100) : 0}%</p></div>
+          <div className="bg-white p-5 rounded-lg shadow-sm"><p className="text-sm text-slate-500">Training tracks available</p><p className="text-2xl font-bold mt-2">{trainingRecommendations.length}</p></div>
         </div>
       </div>
     </LayoutAcademician>

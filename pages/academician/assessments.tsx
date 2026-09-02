@@ -1,5 +1,7 @@
-import React, { ChangeEvent, useMemo, useState } from 'react';
+import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/router';
 import LayoutAcademician from '../../components/LayoutAcademician';
+import { ASSESSMENTS_STORAGE_KEY, getStoredValue, saveStoredValue } from '../../lib/mockData';
 import { importQuestionsFromFile } from '../../lib/questionImport';
 
 type Question = {
@@ -81,7 +83,9 @@ const emptyQuestion = (): Question => ({
 });
 
 export default function AssessmentsPage() {
+  const router = useRouter();
   const [assessments, setAssessments] = useState<Assessment[]>(initialAssessments);
+  const [hydrated, setHydrated] = useState(false);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<'All' | Assessment['status']>('All');
   const [selectedId, setSelectedId] = useState(initialAssessments[0].id);
@@ -95,6 +99,22 @@ export default function AssessmentsPage() {
     status: 'Draft' as Assessment['status'],
     questions: [emptyQuestion()]
   });
+
+  useEffect(() => {
+    const stored = getStoredValue<Assessment[]>(ASSESSMENTS_STORAGE_KEY, initialAssessments);
+    setAssessments(stored);
+    setSelectedId(stored[0]?.id ?? '');
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (hydrated) saveStoredValue(ASSESSMENTS_STORAGE_KEY, assessments);
+  }, [assessments, hydrated]);
+
+  useEffect(() => {
+    const skill = typeof router.query.skill === 'string' ? router.query.skill : '';
+    if (skill && skillOptions.includes(skill)) setForm((current) => ({ ...current, skill, title: `${skill} Skills Assessment` }));
+  }, [router.query.skill]);
 
   const filteredAssessments = useMemo(() => {
     return assessments.filter((assessment) => {
@@ -427,6 +447,14 @@ export default function AssessmentsPage() {
               <div className="bg-slate-50 p-3 rounded"><span className="text-slate-500">Duration</span><div className="text-xl font-semibold mt-1">{selectedAssessment.duration} min</div></div>
               <div className="bg-slate-50 p-3 rounded"><span className="text-slate-500">Submissions</span><div className="text-xl font-semibold mt-1">{selectedAssessment.submissions.length}</div></div>
             </div>
+
+            {selectedAssessment.submissions.length > 0 && (
+              <div className="mt-4 rounded border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+                <div className="font-semibold">Performance signal</div>
+                <div className="mt-1">Average score: {Math.round(selectedAssessment.submissions.reduce((sum, item) => sum + (item.score / item.total) * 100, 0) / selectedAssessment.submissions.length)}%. Results feed the {selectedAssessment.skill} proficiency review.</div>
+                {selectedAssessment.skill === 'AWS' && <div className="mt-1 font-medium">AWS pathway: 42% baseline proficiency to 61% post-assessment target.</div>}
+              </div>
+            )}
 
             <div className="mt-6 grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div>

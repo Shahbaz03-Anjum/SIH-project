@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { defaultLearningVideos, getStoredLearningVideos, saveLearningVideos, trainingRecommendations } from '../lib/mockData';
-import type { LearningVideo, Skill } from '../types';
+import type { LearningVideo, SkillGap } from '../types';
 
 const youtubePattern = /^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)[^\s]+$/i;
 
@@ -14,7 +14,7 @@ const emptyVideo = (skillName: string): LearningVideo => ({
   channel: ''
 });
 
-export default function SkillGapInsights({ gaps }: { gaps: Skill[] }) {
+export default function SkillGapInsights({ gaps }: { gaps: SkillGap[] }) {
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
   const [videos, setVideos] = useState<LearningVideo[]>(defaultLearningVideos);
   const [form, setForm] = useState<LearningVideo>(emptyVideo(''));
@@ -113,11 +113,12 @@ export default function SkillGapInsights({ gaps }: { gaps: Skill[] }) {
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <div className="font-medium">{g.name}</div>
-                  <div className="text-xs text-slate-500">Student proficiency: {g.proficiency}% • Industry demand: High</div>
+                  <div className="text-xs text-slate-500">Student proficiency: {g.proficiency}% • Industry demand: {g.demand}%</div>
                 </div>
 
                 <div className="text-right">
-                  <div className="text-sm text-slate-700">Students affected: {Math.round((100 - g.proficiency) * 2)}</div>
+                  <div className="text-sm font-medium text-rose-700">{g.gap} point gap • {g.affectedStudents} students</div>
+                  <div className="text-xs text-slate-500">{g.priority} priority</div>
                   <button
                     onClick={() => setSelectedSkill(isOpen ? null : g.id)}
                     className="mt-2 px-3 py-1 rounded bg-sky-600 text-white text-sm hover:bg-sky-700"
@@ -135,7 +136,13 @@ export default function SkillGapInsights({ gaps }: { gaps: Skill[] }) {
                     <p className="text-xs text-slate-600 mt-1">{recommendation.description}</p>
                   </div>
 
-                  <div className="flex items-center justify-between gap-3 mb-3">
+                  <div className="mb-3 flex flex-wrap gap-2">
+                    <a href={`/academician/students?skill=${encodeURIComponent(g.name)}`} className="rounded border border-sky-200 px-2.5 py-1 text-xs font-medium text-sky-700 hover:bg-sky-100">View Students</a>
+                    <a href={`/academician/assessments?skill=${encodeURIComponent(g.name)}`} className="rounded border border-sky-200 px-2.5 py-1 text-xs font-medium text-sky-700 hover:bg-sky-100">Create Assessment</a>
+                    <a href="#learning-videos" className="rounded border border-sky-200 px-2.5 py-1 text-xs font-medium text-sky-700 hover:bg-sky-100">View Videos</a>
+                  </div>
+
+                  <div id="learning-videos" className="flex items-center justify-between gap-3 mb-3">
                     <h3 className="text-sm font-semibold text-sky-800">Learning Videos</h3>
                     <button onClick={() => handleShowAdd(g.name)} className="rounded bg-sky-600 px-2.5 py-1 text-xs text-white hover:bg-sky-700">+ Add Video</button>
                   </div>

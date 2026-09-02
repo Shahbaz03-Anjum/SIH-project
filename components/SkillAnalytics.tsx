@@ -1,5 +1,5 @@
 import React from 'react';
-import { skillGapTrendData } from '../lib/mockData';
+import { industryDemand, skillGapTrendData, students } from '../lib/mockData';
 import type { Skill } from '../types';
 
 const trendSkills = [
@@ -82,42 +82,48 @@ function SkillGapTrendChart() {
 }
 
 export default function SkillAnalytics({ skills }: { skills: Skill[] }) {
+  const [selectedSkill, setSelectedSkill] = React.useState(skills[0]?.name ?? '');
+  const averageProficiency = Math.round(skills.reduce((sum, skill) => sum + skill.proficiency, 0) / skills.length);
+  const assessed = students.reduce((sum, student) => sum + student.assessments.filter((assessment) => assessment.completed).length, 0);
+  const assessmentCount = students.reduce((sum, student) => sum + student.assessments.length, 0);
+  const verified = skills.filter((skill) => skill.verified).length;
+  const selectedDemand = industryDemand.find((row) => row.skill === selectedSkill);
+  const readiness = [
+    { label: 'High (85+)', value: students.filter((student) => student.readiness >= 85).length, className: 'bg-[var(--sage)]' },
+    { label: 'Medium (60-84)', value: students.filter((student) => student.readiness >= 60 && student.readiness < 85).length, className: 'bg-[#f4e5b8]' },
+    { label: 'Low (<60)', value: students.filter((student) => student.readiness < 60).length, className: 'bg-[#f4d7d1]' }
+  ];
   return (
     <section className="rounded-[24px] border border-[var(--border)] bg-[rgba(255,250,245,0.9)] p-4 shadow-sm">
       <h2 className="mb-4 text-lg font-semibold text-[var(--charcoal)]">Skill Analytics</h2>
+
+      <div className="mb-4 grid grid-cols-2 gap-2 md:grid-cols-4">
+        <div className="rounded-2xl bg-[var(--sage)] p-3"><div className="text-xs text-[var(--muted)]">Average proficiency</div><div className="mt-1 text-xl font-bold">{averageProficiency}%</div></div>
+        <div className="rounded-2xl bg-[#f4e5b8] p-3"><div className="text-xs text-[var(--muted)]">Assessment completion</div><div className="mt-1 text-xl font-bold">{assessmentCount ? Math.round((assessed / assessmentCount) * 100) : 0}%</div></div>
+        <div className="rounded-2xl bg-[#f4d7d1] p-3"><div className="text-xs text-[var(--muted)]">Verified skills</div><div className="mt-1 text-xl font-bold">{verified}/{skills.length}</div></div>
+        <div className="rounded-2xl bg-[#e9e3d9] p-3"><div className="text-xs text-[var(--muted)]">Unverified skills</div><div className="mt-1 text-xl font-bold">{skills.length - verified}</div></div>
+      </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         <div>
           <h3 className="mb-2 text-sm font-medium text-[var(--muted)]">Skill distribution</h3>
           <div className="space-y-3">
             {skills.map((s) => (
-              <div key={s.id} className="flex items-center gap-3">
+              <button type="button" onClick={() => setSelectedSkill(s.name)} key={s.id} className={`flex w-full items-center gap-3 rounded-lg p-1 text-left ${selectedSkill === s.name ? 'bg-[#f4e5b8]' : ''}`}>
                 <div className="w-32 text-sm text-[var(--charcoal)]">{s.name}</div>
                 <div className="flex-1">
                   <SmallBar value={s.proficiency} />
                 </div>
                 <div className="w-12 text-right text-sm text-[var(--charcoal)]">{s.proficiency}%</div>
-              </div>
+              </button>
             ))}
+            {selectedDemand && <div className="mt-4 rounded-xl border border-[var(--border)] bg-white p-3 text-sm"><div className="font-semibold">{selectedDemand.skill} readiness detail</div><div className="mt-2 grid grid-cols-3 gap-2 text-xs"><span>Demand <b>{selectedDemand.demand}%</b></span><span>Proficiency <b>{selectedDemand.proficiency}%</b></span><span>Gap <b>{selectedDemand.demand - selectedDemand.proficiency} pts</b></span></div></div>}
           </div>
         </div>
 
         <div>
           <h3 className="mb-2 text-sm font-medium text-[var(--muted)]">Readiness distribution</h3>
-          <div className="grid grid-cols-3 gap-2">
-            <div className="rounded-2xl bg-[var(--sage)] p-3">
-              <div className="text-xs text-[var(--muted)]">High (85+)</div>
-              <div className="mt-2 text-xl font-bold text-[var(--charcoal)]">120</div>
-            </div>
-            <div className="rounded-2xl bg-[#f4e5b8] p-3">
-              <div className="text-xs text-[var(--muted)]">Medium (60-84)</div>
-              <div className="mt-2 text-xl font-bold text-[var(--charcoal)]">210</div>
-            </div>
-            <div className="rounded-2xl bg-[#f4d7d1] p-3">
-              <div className="text-xs text-[var(--muted)]">Low (&lt;60)</div>
-              <div className="mt-2 text-xl font-bold text-[var(--charcoal)]">102</div>
-            </div>
-          </div>
+            <div className="grid grid-cols-3 gap-2">{readiness.map((item) => <div key={item.label} className={`rounded-2xl p-3 ${item.className}`}><div className="text-xs text-[var(--muted)]">{item.label}</div><div className="mt-2 text-xl font-bold text-[var(--charcoal)]">{item.value}</div></div>)}</div>
 
           <div className="mt-4">
             <h4 className="text-sm font-medium text-[var(--muted)]">Skill-gap trends</h4>

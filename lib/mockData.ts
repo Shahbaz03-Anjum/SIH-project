@@ -1,4 +1,4 @@
-import type { LearningVideo, Opportunity, ProfileData, Skill, Student, TrainingRecommendation } from '../types';
+import type { IndustryDemand, LearningVideo, Opportunity, ProfileData, Skill, Student, TrainingRecommendation } from '../types';
 
 export const skillsMaster: Skill[] = [
   { id: 's1', name: 'Python', proficiency: 82, verified: true },
@@ -62,6 +62,22 @@ export const students: Student[] = [
     internshipStatus: 'Not applied'
   }
 ];
+
+export const industryDemand: IndustryDemand[] = [
+  { skill: 'AWS', demand: 82, proficiency: 42, affectedStudents: 68, growth: 18, category: 'Cloud', industries: ['Technology', 'Finance', 'Healthcare'], roles: ['Cloud Analyst', 'Software Engineer'] },
+  { skill: 'React', demand: 76, proficiency: 68, affectedStudents: 54, growth: 14, category: 'Frontend', industries: ['Technology', 'Product'], roles: ['Software Engineer', 'Product Intern'] },
+  { skill: 'Python', demand: 88, proficiency: 82, affectedStudents: 31, growth: 11, category: 'Data', industries: ['Technology', 'Finance', 'Healthcare'], roles: ['Software Engineer', 'Data Analyst'] },
+  { skill: 'SQL', demand: 71, proficiency: 76, affectedStudents: 22, growth: 9, category: 'Database', industries: ['Finance', 'Healthcare'], roles: ['Data Analyst'] },
+  { skill: 'Docker', demand: 63, proficiency: 51, affectedStudents: 59, growth: 22, category: 'DevOps', industries: ['Technology'], roles: ['Cloud Analyst', 'Software Engineer'] }
+];
+
+export const skillGaps = industryDemand.map((row) => ({
+  ...row,
+  id: `gap-${row.skill.toLowerCase()}`,
+  name: row.skill,
+  gap: row.demand - row.proficiency,
+  priority: row.demand - row.proficiency >= 35 ? 'Critical' : row.demand - row.proficiency >= 20 ? 'High' : row.demand - row.proficiency >= 10 ? 'Medium' : 'Low'
+} as const));
 
 export const aggregatedKPIs = {
   totalStudents: 432,
@@ -363,6 +379,7 @@ export const learningVideos: LearningVideo[] = [...defaultLearningVideos];
 
 export const PROFILE_STORAGE_KEY = 'skillconnect.userProfile';
 export const LEARNING_VIDEOS_STORAGE_KEY = 'skillconnect.learningVideos';
+export const ASSESSMENTS_STORAGE_KEY = 'skillconnect.assessments';
 
 const readStoredJson = <T,>(key: string, fallback: T): T => {
   if (typeof window === 'undefined') {
@@ -405,6 +422,13 @@ export const getStoredLearningVideos = (): LearningVideo[] => {
 export const saveLearningVideos = (videos: LearningVideo[]) => {
   if (typeof window === 'undefined') return;
   window.localStorage.setItem(LEARNING_VIDEOS_STORAGE_KEY, JSON.stringify(videos));
+};
+
+export const getStoredValue = <T,>(key: string, fallback: T): T => readStoredJson(key, fallback);
+
+export const saveStoredValue = <T,>(key: string, value: T) => {
+  if (typeof window === 'undefined') return;
+  window.localStorage.setItem(key, JSON.stringify(value));
 };
 
 export const reportsOverview = {

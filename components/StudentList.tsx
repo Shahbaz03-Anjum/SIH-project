@@ -4,6 +4,7 @@ import type { Student } from '../types';
 export default function StudentList({ students }: { students: Student[] }) {
   const [q, setQ] = useState('');
   const [dept, setDept] = useState('All');
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const depts = useMemo(() => Array.from(new Set(students.map((s) => s.department))), [students]);
 
@@ -12,6 +13,7 @@ export default function StudentList({ students }: { students: Student[] }) {
     const matchesDept = dept === 'All' || s.department === dept;
     return matchesQ && matchesDept;
   });
+  const selectedStudent = students.find((student) => student.id === selectedId);
 
   return (
     <section className="rounded-[24px] border border-[var(--border)] bg-[rgba(255,250,245,0.9)] p-4 shadow-sm">
@@ -43,7 +45,7 @@ export default function StudentList({ students }: { students: Student[] }) {
           <tbody>
             {filtered.map((s) => (
               <tr key={s.id} className="border-t border-[var(--border)]">
-                <td className="py-3 font-medium text-[var(--charcoal)]">{s.name}</td>
+                <td className="py-3 font-medium text-[var(--charcoal)]"><button type="button" onClick={() => setSelectedId(s.id)} className="text-left hover:text-[var(--accent)]">{s.name}</button></td>
                 <td className="py-3 text-[var(--muted)]">{s.department}</td>
                 <td className="py-3 text-center font-medium text-[var(--charcoal)]">{s.readiness}%</td>
                 <td className="py-3">
@@ -64,6 +66,20 @@ export default function StudentList({ students }: { students: Student[] }) {
           </tbody>
         </table>
       </div>
+
+      {selectedStudent && (
+        <div className="mt-5 rounded-2xl border border-[var(--border)] bg-white p-4">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+            <div><h3 className="text-lg font-semibold text-[var(--charcoal)]">{selectedStudent.name}</h3><p className="text-sm text-[var(--muted)]">{selectedStudent.department} • {selectedStudent.internshipStatus}</p></div>
+            <button type="button" onClick={() => setSelectedId(null)} className="text-xs text-[var(--muted)] hover:text-[var(--charcoal)]">Close details</button>
+          </div>
+          <div className="mt-4 grid gap-4 md:grid-cols-3">
+            <div><div className="text-xs text-[var(--muted)]">Skill proficiency</div><div className="mt-2 space-y-2">{selectedStudent.topSkills.map((skill) => <div key={skill.id} className="flex justify-between text-sm"><span>{skill.name}{skill.verified ? ' (verified)' : ''}</span><b>{skill.proficiency}%</b></div>)}</div></div>
+            <div><div className="text-xs text-[var(--muted)]">Assessment results</div><div className="mt-2 space-y-2">{selectedStudent.assessments.map((assessment) => <div key={assessment.id} className="flex justify-between text-sm"><span>{assessment.title}</span><b>{assessment.completed ? `${assessment.score}%` : 'Pending'}</b></div>)}</div></div>
+            <div><div className="text-xs text-[var(--muted)]">Recommended training</div><div className="mt-2 text-sm">{selectedStudent.majorGaps.length ? selectedStudent.majorGaps.map((gap) => <a key={gap.id} href={`/academician/skill-gaps?skill=${encodeURIComponent(gap.name)}`} className="mb-2 block font-medium text-[var(--accent)]">{gap.name} upskilling track</a>) : 'No major gaps identified.'}</div></div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }

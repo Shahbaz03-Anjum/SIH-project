@@ -5,6 +5,25 @@ export type Skill = {
   verified?: boolean;
 };
 
+export type IndustryDemand = {
+  skill: string;
+  demand: number;
+  proficiency: number;
+  affectedStudents: number;
+  growth: number;
+  category: string;
+  industries: string[];
+  roles: string[];
+};
+
+export type SkillGap = IndustryDemand & {
+  id: string;
+  name: string;
+  gap: number;
+  priority: 'Critical' | 'High' | 'Medium' | 'Low';
+  trainingId?: string;
+};
+
 export type Assessment = {
   id: string;
   title: string;
