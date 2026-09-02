@@ -8,6 +8,15 @@ export const skillsMaster: Skill[] = [
   { id: 's5', name: 'Docker', proficiency: 51, verified: false }
 ];
 
+export const skillGapTrendData = [
+  { month: 'Apr', AWS: 58, Python: 35, SQL: 42, React: 30, Docker: 48 },
+  { month: 'May', AWS: 55, Python: 34, SQL: 40, React: 31, Docker: 47 },
+  { month: 'Jun', AWS: 52, Python: 31, SQL: 39, React: 33, Docker: 45 },
+  { month: 'Jul', AWS: 49, Python: 29, SQL: 37, React: 35, Docker: 46 },
+  { month: 'Aug', AWS: 46, Python: 27, SQL: 35, React: 37, Docker: 43 },
+  { month: 'Sep', AWS: 43, Python: 24, SQL: 33, React: 39, Docker: 41 }
+];
+
 export const students: Student[] = [
   {
     id: 'st1',
@@ -67,7 +76,7 @@ export const assessmentSummaries = [
   {
     id: 'a-101',
     title: 'Python Foundations',
-    student: 'Aarav Sharma',
+    student: 'Faraz Sualeh',
     score: 92,
     date: '2026-08-17',
     status: 'Passed',
@@ -76,7 +85,7 @@ export const assessmentSummaries = [
   {
     id: 'a-102',
     title: 'Cloud Essentials',
-    student: 'Sara Khan',
+    student: 'Burhan Parkar',
     score: 76,
     date: '2026-08-21',
     status: 'Needs review',
@@ -85,7 +94,7 @@ export const assessmentSummaries = [
   {
     id: 'a-103',
     title: 'Data Structures',
-    student: 'Rahul Patil',
+    student: 'Sahir Patel',
     score: 68,
     date: '2026-08-25',
     status: 'In progress',
@@ -94,7 +103,7 @@ export const assessmentSummaries = [
   {
     id: 'a-104',
     title: 'React UI Sprint',
-    student: 'Neha Verma',
+    student: 'Shaddik Chaudhary',
     score: 81,
     date: '2026-08-26',
     status: 'Passed',
@@ -109,7 +118,7 @@ export const opportunities: Opportunity[] = [
     company: 'Nexa Labs',
     category: 'Internship',
     requiredSkills: ['React', 'JavaScript', 'UI Design'],
-    location: 'Bengaluru',
+    location: 'Mumbai',
     workType: 'Hybrid',
     experienceLevel: 'Entry',
     deadline: '2026-09-10',
@@ -242,6 +251,29 @@ export const trainingRecommendations: TrainingRecommendation[] = [
         url: 'https://www.youtube.com/watch?v=5hzZtqCNQKk'
       }
     ]
+  },
+  {
+    id: 'tr-5',
+    title: 'Docker and Container Foundations',
+    skill: 'Docker',
+    category: 'DevOps',
+    difficulty: 'Beginner',
+    duration: '3 weeks',
+    description: 'Build confidence with container images, networking, volumes, and local development workflows.',
+    videos: [
+      {
+        title: 'Docker Tutorial for Beginners',
+        channel: 'TechWorld with Nana',
+        thumbnail: 'https://img.youtube.com/vi/3c-iBn73dDE/0.jpg',
+        url: 'https://www.youtube.com/watch?v=3c-iBn73dDE'
+      },
+      {
+        title: 'Docker Crash Course',
+        channel: 'Traversy Media',
+        thumbnail: 'https://img.youtube.com/vi/_YbP1B0hNqY/0.jpg',
+        url: 'https://www.youtube.com/watch?v=_YbP1B0hNqY'
+      }
+    ]
   }
 ];
 
@@ -314,6 +346,16 @@ export const defaultLearningVideos: LearningVideo[] = [
     url: 'https://www.youtube.com/watch?v=bMknfKXIFA8',
     channel: 'JavaScript Mastery',
     thumbnail: 'https://img.youtube.com/vi/bMknfKXIFA8/0.jpg'
+  },
+  {
+    id: 'video-4',
+    title: 'Docker Tutorial for Beginners',
+    skill: 'Docker',
+    category: 'DevOps',
+    description: 'Learn images, containers, volumes, and practical Docker workflows for modern applications.',
+    url: 'https://www.youtube.com/watch?v=3c-iBn73dDE',
+    channel: 'TechWorld with Nana',
+    thumbnail: 'https://img.youtube.com/vi/3c-iBn73dDE/0.jpg'
   }
 ];
 
