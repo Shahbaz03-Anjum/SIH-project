@@ -41,13 +41,25 @@ export default function LayoutAcademician({ children }: { children: ReactNode })
   return (
     <div className="min-h-screen bg-slate-50 flex">
       <aside className="w-72 border-r border-[var(--border)] bg-[var(--charcoal)] px-5 py-6 text-white">
-        <div className="mb-8 flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent)] text-base font-bold text-white">S</div>
-          <div>
-            <div className="text-lg font-semibold">SkillConnect</div>
-            <div className="text-xs text-slate-300">Mentor Portal</div>
+        <div className="mb-6 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--accent)] text-base font-bold text-white">S</div>
+            <div>
+              <div className="text-lg font-semibold">SkillConnect</div>
+              <div className="text-xs text-slate-300">Mentor Portal</div>
+            </div>
           </div>
         </div>
+
+        <a
+          href="/industry"
+          className="mb-6 flex items-center justify-between rounded-xl border border-emerald-500/30 bg-emerald-500/10 px-3 py-2 text-xs font-semibold text-emerald-200 hover:bg-emerald-500/20 hover:text-white transition"
+        >
+          <span className="flex items-center gap-1.5">
+            🏢 Switch to Industry Portal
+          </span>
+          <span className="rounded bg-emerald-500/20 px-1.5 py-0.5 text-[10px]">Recruiter</span>
+        </a>
 
         <div className="mb-6 rounded-2xl border border-white/10 bg-white/5 p-3">
           <div className="flex items-center gap-3">
